@@ -1,7 +1,11 @@
 package com.example.model; // Isso indica ao Java onde o arquivo está
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
+import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,15 +17,15 @@ import lombok.Data;
 @Entity
 @Data
 public class Album {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
-    private Integer releaseYear;
+    
+    @ElementCollection // Cria uma tabela auxiliar para as URLs das imagens
+    private List<String> coverImages = new ArrayList<>();
 
-    // Muitos álbuns pertencem a um artista
     @ManyToOne
     @JoinColumn(name = "artist_id")
-    @JsonBackReference // Evita loop infinito no JSON
+    @JsonBackReference
     private Artist artist;
 }

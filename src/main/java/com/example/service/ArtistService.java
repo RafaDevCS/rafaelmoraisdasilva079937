@@ -17,4 +17,8 @@ public class ArtistService {
     public List<Artist> findAll() { return repository.findAll(); }
     public Artist save(Artist artist) { return repository.save(artist); }
     public Optional<Artist> findById(Long id) { return repository.findById(id); }
+    public List<Artist> findByName(String name, Sort sort) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'findByName'");
+    }
 }

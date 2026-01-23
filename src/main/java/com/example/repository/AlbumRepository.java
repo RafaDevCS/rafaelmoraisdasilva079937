@@ -11,7 +11,7 @@ import com.example.model.ArtistType;
 @Repository
 public interface AlbumRepository extends JpaRepository<Album, Long> {
     // d) Paginação e e) Filtro por tipo de artista
-    Page<Album> findByArtistType(ArtistType type, Pageable pageable);
+    Page<Album> findByArtistType(ArtistType type, org.springframework.data.domain.Pageable pageable);
     
     // Apenas paginação simples
     Page<Album> findAll(Pageable pageable);
