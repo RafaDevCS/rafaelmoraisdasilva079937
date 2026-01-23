@@ -1,14 +1,17 @@
 package com.example.service;
 
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
+import io.minio.GetPresignedObjectUrlArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
+import io.minio.http.Method;
 
 @Service
 public class FileStorageService {
@@ -29,5 +32,25 @@ public class FileStorageService {
                 .build()
         );
         return fileName; // Retornamos o nome para salvar no banco
+    }
+
+    /**
+     * Gera uma URL temporária para visualizar a imagem
+     * @param fileName Nome do arquivo guardado no MinIO
+     * @return URL assinada válida por 15 minutos
+     */
+    public String getPresignedUrl(String fileName) {
+        try {
+            return minioClient.getPresignedObjectUrl(
+                GetPresignedObjectUrlArgs.builder()
+                    .method(Method.GET)
+                    .bucket(bucketName)
+                    .object(fileName)
+                    .expiry(15, TimeUnit.MINUTES) // Define o tempo de expiração
+                    .build()
+            );
+        } catch (Exception e) {
+            throw new RuntimeException("Erro ao gerar URL da imagem", e);
+        }
     }
 }

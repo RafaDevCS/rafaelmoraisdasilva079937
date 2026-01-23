@@ -1,8 +1,12 @@
 package com.example.controller;
 
+import com.example.dto.AlbumResponseDTO;
 import com.example.model.Album;
 import com.example.model.ArtistType; // Seu Enum
 import com.example.repository.AlbumRepository;
+
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page; // IMPORTANTE
 import org.springframework.data.domain.PageRequest; // IMPORTANTE
@@ -51,5 +55,18 @@ public class AlbumController {
         }
 
         return ResponseEntity.ok(albumRepository.save(album));
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<AlbumResponseDTO> getAlbum(@PathVariable Long id) {
+        Album album = albumRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Álbum não encontrado"));
+
+        // Transforma a lista de nomes de arquivos em lista de URLs assinadas
+        List<String> urls = album.getCoverImages().stream()
+                .map(fileStorageService::getPresignedUrl)
+                .toList();
+
+        return ResponseEntity.ok(new AlbumResponseDTO(album.getId(), album.getTitle(), urls));
     }
 }
