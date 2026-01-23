@@ -17,3 +17,28 @@ Artista e Album
 Acesse o console do H2: Vá em http://localhost:8080/h2-console para ver as tabelas
 
 Para rodar a aplicação no VS code click 'Run Java': http://localhost:8080/artist
+
+Faça um POST para http://localhost:8080/auth/login enviando um JSON de login. Você receberá um accessToken.
+exemplo:
+{
+    user: 'seunome'
+}
+
+Após receberá dois tokens como no exemplo abaixo
+{
+    "refreshToken": "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3NjkxOTQ4MDAsImV4cCI6MTc2OTI4MTIwMH0.G_F7-broRS8Rg-carlqF4tVm29G4k32LQUHtTeUIMek",
+    "accessToken": "eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE3NjkxOTQ4MDAsImV4cCI6MTc2OTE5NTEwMH0.5POLC0TZjPohUDnpbt4nQ9BmtP28dPFtrN6VR3VURs4"
+}
+
+Insira um exemplo
+
+Faça um POST em http://localhost:8080/artists
+{
+    "name": "Pink Floyd",
+    "genre": "Progressive Rock"
+}
+Faça outro POST em http://localhost:8080/artists/1/albums
+{
+    "title": "The Dark Side of the Moon",
+    "releaseYear": 1973
+}

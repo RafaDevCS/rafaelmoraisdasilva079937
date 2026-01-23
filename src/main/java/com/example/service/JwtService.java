@@ -6,6 +6,7 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.util.Date;
 import java.util.function.Function;
@@ -14,12 +15,15 @@ import java.util.function.Function;
 public class JwtService {
 
     // A chave secreta precisa ter pelo menos 32 caracteres para o algoritmo HS256
-    private static final String SECRET_KEY = "minha_chave_secreta_muito_longa_e_super_segura_com_muitos_caracteres";
+    private static final String SECRET_KEY = "MinhaChaveSuperSecretaParaMusicasEAlbuns2024!#@";
 
     // Transforma a String em uma chave real para o algoritmo
     private Key getSigningKey() {
-        return Keys.hmacShaKeyFor(SECRET_KEY.getBytes());
+        // Agora usamos a variável que tem o charset garantido
+        byte[] keyBytes = SECRET_KEY.getBytes(StandardCharsets.UTF_8);
+        return Keys.hmacShaKeyFor(keyBytes);
     }
+
 
     // Gera o token de acesso (5 minutos)
     public String generateToken(String username) {

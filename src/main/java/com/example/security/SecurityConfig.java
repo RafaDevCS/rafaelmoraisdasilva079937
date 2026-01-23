@@ -26,10 +26,11 @@ public class SecurityConfig {
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // API sem estado (Stateless)
             .authorizeHttpRequests(auth -> auth
                 .requestMatchers("/auth/**", "/swagger-ui/**", "/v3/api-docs/**", "/h2-console/**").permitAll() // Rotas liberadas
-                .anyRequest().authenticated() // Tudo o mais exige token!
+                // 1. MUDE AQUI: De .authenticated() para .permitAll()
+                .anyRequest().permitAll()
             )
             // Adiciona nosso filtro JWT antes do filtro padrão de login
-            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+            //.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
             // Permite carregar o console do H2 em um frame
             .headers(headers -> headers.frameOptions(frame -> frame.disable()));
 
