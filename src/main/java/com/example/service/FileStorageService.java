@@ -46,11 +46,12 @@ public class FileStorageService {
                     .method(Method.GET)
                     .bucket(bucketName)
                     .object(fileName)
-                    .expiry(15, TimeUnit.MINUTES) // Define o tempo de expiração
+                    .expiry(30, TimeUnit.MINUTES) // <--- Alterado de 15 para 30 minutos
                     .build()
             );
         } catch (Exception e) {
-            throw new RuntimeException("Erro ao gerar URL da imagem", e);
+            // Em caso de erro (ex: MinIO fora do ar), lançamos uma exceção clara
+            throw new RuntimeException("Não foi possível gerar o link da imagem: " + fileName, e);
         }
     }
 }

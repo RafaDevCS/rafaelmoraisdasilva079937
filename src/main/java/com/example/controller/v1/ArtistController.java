@@ -1,29 +1,29 @@
-package com.example.controller;
+package com.example.controller.v1;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort; // Import essencial
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/* import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+ */
 import com.example.model.Artist;
 import com.example.service.ArtistService;
 
 @RestController
-@RequestMapping("/artists")
+@RequestMapping("/api/v1/artists")
 public class ArtistController {
 
     @Autowired
     private ArtistService service;
 
-    @GetMapping(produces = "application/vnd.company.app-v1+json")
-    public List<Artist> getAllV1() {
+    @GetMapping
+    public List<Artist> getAll() {
         return service.findAll();
-    }
-
-    @GetMapping(produces = "application/vnd.company.app-v2+json")
-    public List<ArtistDTOV2> getAllV2() {
-        return service.findAllV2();
     }
 
     @GetMapping("/search")
@@ -38,14 +38,8 @@ public class ArtistController {
         return service.findByName(name, sort);
     }
 
-    @PutMapping("/{id}")
-    public ResponseEntity<Artist> update(@PathVariable Long id, @RequestBody Artist artistDetails) {
-        return service.findById(id)
-                .map(artist -> {
-                    artist.setName(artistDetails.getName());
-                    artist.setGenre(artistDetails.getGenre());
-                    artist.setType(artistDetails.getType()); // Certifique-se que o model tem o campo 'type'
-                    return ResponseEntity.ok(service.save(artist));
-                }).orElse(ResponseEntity.notFound().build());
+    @PostMapping
+    public Artist create(@RequestBody Artist artist) {
+        return service.save(artist);
     }
 }

@@ -25,9 +25,10 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable()) // Desativa para APIs REST
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // API sem estado (Stateless)
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/auth/**", "/swagger-ui/**", "/v3/api-docs/**", "/h2-console/**").permitAll() // Rotas liberadas
-                // 1. MUDE AQUI: De .authenticated() para .permitAll()
-                .anyRequest().permitAll()
+                .requestMatchers("/api/v1/auth/**").permitAll() // Rota de login versionada
+                .requestMatchers("/v3/api-docs/**", "/swagger-ui/**").permitAll()
+                .requestMatchers("/api/v1/**").authenticated() // Protege todos os endpoints v1
+                .anyRequest().denyAll()
             )
             // Adiciona nosso filtro JWT antes do filtro padrão de login
             //.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)

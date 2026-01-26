@@ -42,3 +42,12 @@ Faça outro POST em http://localhost:8080/artists/1/albums
     "title": "The Dark Side of the Moon",
     "releaseYear": 1973
 }
+
+Digite o comando no terminal
+
+docker-compose up -d
+
+Acesse o Console do MinIO em http://localhost:9001 
+
+Execute o comando para gerar o bucket padrão
+mvn spring-boot:run 
