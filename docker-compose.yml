@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  # Banco de Dados Profissional (PostgreSQL)
+  # Banco de Dados
   postgres-db:
     image: postgres:15
     container_name: postgres_music
@@ -11,23 +11,47 @@ services:
       POSTGRES_USER: musicuser
       POSTGRES_PASSWORD: musicpassword
       POSTGRES_DB: musicdb
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U musicuser -d musicdb"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  # Armazenamento de Imagens (MinIO)
+  # Armazenamento S3
   minio:
     image: minio/minio
     container_name: minio_music
     ports:
-      - "9000:9000" # Porta da API (S3)
-      - "9001:9001" # Porta do Console (Browser)
+      - "9000:9000"
+      - "9001:9001"
     environment:
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: minioadmin
     command: server /data --console-address ":9001"
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
     volumes:
       - minio_data:/data
 
-volumes:
-  postgres_data:
-  minio_data:
+  # Sua API Spring Boot
+  api-music:
+    build: .
+    container_name: spring_api_music
+    ports:
+      - "8080:8080"
+    depends_on:
+      postgres-db:
+        condition: service_healthy # Só sobe a API quando o DB estiver saudável
+      minio:
+        condition: service_healthy # Só sobe a API quando o MinIO estiver saudável
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health/liveness"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+    restart: always # Reinicia o container se o Health Check falhar
