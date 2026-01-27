@@ -1,5 +1,3 @@
-version: '3.8'
-
 services:
   # Banco de Dados
   postgres-db:
@@ -46,12 +44,17 @@ services:
       - "8080:8080"
     depends_on:
       postgres-db:
-        condition: service_healthy # Só sobe a API quando o DB estiver saudável
+        condition: service_healthy
       minio:
-        condition: service_healthy # Só sobe a API quando o MinIO estiver saudável
+        condition: service_healthy
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:8080/actuator/health/liveness"]
       interval: 30s
       timeout: 10s
       retries: 3
-    restart: always # Reinicia o container se o Health Check falhar
+    restart: always
+
+# ESSA SEÇÃO ABAIXO ERA O QUE ESTAVA FALTANDO:
+volumes:
+  postgres_data:
+  minio_data:

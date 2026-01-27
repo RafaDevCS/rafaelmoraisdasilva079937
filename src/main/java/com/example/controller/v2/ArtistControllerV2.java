@@ -18,8 +18,6 @@ import com.example.service.ArtistService;
 @RequestMapping("/api/v2/artists") // Versão 2
 public class ArtistControllerV2 {
     // Digamos que na V2 você agora retorna um DTO mais enxuto
-    @GetMapping
-    public List<ArtistDTOV2> getAll() {
-        return service.findAllV2();
-    }
+    
+    
 }

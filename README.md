@@ -50,4 +50,34 @@ docker-compose up -d
 Acesse o Console do MinIO em http://localhost:9001 
 
 Execute o comando para gerar o bucket padrão
-mvn spring-boot:run 
+./mvnw spring-boot:run 
+
+Teste de unidade
+mvn test
+
+docker-compose up --build -d
+Baixará o Maven e o Java.
+
+
+1 Docker: docker-compose up -d (sobe Postgres e MinIO).
+
+2 Bucket: Acesse localhost:9001 e crie o bucket album-covers (ou deixe o script de Auto-create que fizemos rodar).
+
+3 Build: No terminal da pasta do projeto: mvn clean install.
+
+4 Run: mvn spring-boot:run.
+
+5 Swagger: Acesse http://localhost:8080/swagger-ui/index.html para ver se Sandy & Junior já aparecem lá (via Flyway).
+
+Limpe o cache do Maven:
+
+1
+./mvnw clean install
+Suba a infraestrutura:
+
+2
+docker compose up -d
+Rode a aplicação:
+
+3
+./mvnw spring-boot:run

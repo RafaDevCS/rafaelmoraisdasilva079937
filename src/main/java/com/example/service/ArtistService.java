@@ -1,13 +1,14 @@
 package com.example.service;
 
-import java.util.List;
-import java.util.Optional;
-import org.springframework.data.domain.Sort;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
 
 import com.example.model.Artist;
 import com.example.repository.ArtistRepository;
+
+// import org.springdoc.core.converters.models.Sort;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ArtistService {
@@ -17,8 +18,7 @@ public class ArtistService {
     public List<Artist> findAll() { return repository.findAll(); }
     public Artist save(Artist artist) { return repository.save(artist); }
     public Optional<Artist> findById(Long id) { return repository.findById(id); }
-    public List<Artist> findByName(String name, Sort sort) {
-        // TODO Auto-generated method stub
+    public List<Artist> findByName(String name, org.springframework.data.domain.Sort sort) {
         throw new UnsupportedOperationException("Unimplemented method 'findByName'");
     }
 }

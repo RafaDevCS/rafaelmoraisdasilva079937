@@ -1,18 +1,11 @@
 package com.example.controller.v1;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Sort; // Import essencial
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-
-/* import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
- */
 import com.example.model.Artist;
 import com.example.service.ArtistService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/artists")
