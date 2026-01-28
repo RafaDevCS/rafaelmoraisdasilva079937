@@ -18,7 +18,7 @@ import lombok.Data;
 @Data
 public class Album {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     private String title;
     
     @ElementCollection // Cria uma tabela auxiliar para as URLs das imagens

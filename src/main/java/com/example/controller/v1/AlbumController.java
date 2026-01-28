@@ -29,7 +29,6 @@ public class AlbumController {
     @Autowired
     private FileStorageService fileStorageService;
 
-    // d) Paginação e e) Filtro por tipo de artista (SINGER/BAND)
     @GetMapping
     public Page<AlbumResponseDTO> getAllAlbums(
             @RequestParam(required = false) ArtistType type,
@@ -45,7 +44,6 @@ public class AlbumController {
             albumPage = albumRepository.findAll(pageable);
         }
 
-        // Mapeia para o DTO com URLs que expiram em 30 minutos
         return albumPage.map(album -> new AlbumResponseDTO(
                 album.getId(),
                 album.getTitle(),
@@ -55,12 +53,13 @@ public class AlbumController {
         ));
     }
 
-    // Upload de múltiplas capas
+    // ALTERADO: @PathVariable Long albumId -> Integer albumId
     @PostMapping("/{albumId}/covers")
     public ResponseEntity<Album> uploadCovers(
-            @PathVariable Long albumId,
+            @PathVariable Integer albumId, 
             @RequestParam("files") MultipartFile[] files) throws Exception {
         
+        // Agora o tipo do parâmetro combina com o esperado pelo JpaRepository<Album, Integer>
         Album album = albumRepository.findById(albumId)
                 .orElseThrow(() -> new RuntimeException("Álbum não encontrado"));
 
