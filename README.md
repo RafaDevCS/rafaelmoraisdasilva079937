@@ -54,4 +54,7 @@ Execute o comando para gerar o bucket padrão
 
 Teste de unidade
 mvn test
+ou
+./mvnw teste   
 
+Bucket4j. Ela permite controlar o fluxo de requisições.
