@@ -8,9 +8,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.service.JwtService;
-import com.example.dto.LoginDTO; // Importe o DTO que criamos
+import com.example.dto.LoginDTO;
 
-import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
@@ -23,7 +22,6 @@ public class AuthController {
 
     @PostMapping("/login")
     public Map<String, String> login(@RequestBody LoginDTO login) {
-        // Agora o login.username() vai funcionar!
         String token = jwtService.generateToken(login.username());
         String refresh = jwtService.generateRefreshToken(login.username());
         

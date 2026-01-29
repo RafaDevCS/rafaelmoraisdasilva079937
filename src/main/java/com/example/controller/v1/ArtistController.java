@@ -21,13 +21,13 @@ public class ArtistController {
 
     @GetMapping("/search")
     public List<Artist> searchByName(
-            @RequestParam String name,
-            @RequestParam(defaultValue = "asc") String direction) {
-        
+    @RequestParam String name,
+    @RequestParam(defaultValue = "asc") String direction) {
+    
         Sort sort = direction.equalsIgnoreCase("desc") 
-                    ? Sort.by("name").descending() 
-                    : Sort.by("name").ascending();
-                    
+            ? Sort.by("name").descending() 
+            : Sort.by("name").ascending();
+                
         return service.findByName(name, sort);
     }
 

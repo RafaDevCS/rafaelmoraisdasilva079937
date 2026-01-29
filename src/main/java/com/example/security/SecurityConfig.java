@@ -9,9 +9,15 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity
+// @EnableWebSecurity
 public class SecurityConfig {
-
+    @Bean
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        http.csrf(csrf -> csrf.disable()) // Desabilita CSRF para testar POST/PUT
+            .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()); // Libera tudo
+        return http.build();
+    }
+/* 
     private final JwtAuthenticationFilter jwtAuthFilter;
 
     // Construtor para injetar o filtro
@@ -37,5 +43,5 @@ public class SecurityConfig {
             .headers(headers -> headers.frameOptions(frame -> frame.disable()));
 
         return http.build();
-    }
+    } */
 }

@@ -30,7 +30,7 @@ class ArtistServiceTest {
     @Test
     @DisplayName("Deve salvar um artista com sucesso")
     void shouldSaveArtistSuccessfully() {
-        // GIVEN (Dado que...)
+        
         Artist artist = new Artist();
         artist.setName("Rouge");
         artist.setType(ArtistType.BAND);
