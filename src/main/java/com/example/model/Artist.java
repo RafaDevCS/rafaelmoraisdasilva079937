@@ -1,7 +1,9 @@
 package com.example.model; // Isso indica ao Java onde o arquivo está
 
+import java.util.ArrayList;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 import jakarta.persistence.CascadeType;
@@ -12,8 +14,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import lombok.Data;
 
 @Entity
@@ -28,9 +30,9 @@ public class Artist {
     @Enumerated(EnumType.STRING)
     private ArtistType type; // SINGER ou BAND
 
-    @OneToMany(mappedBy = "artist", cascade = CascadeType.ALL)
-    @JsonManagedReference
-    private List<Album> albums;
+    @ManyToMany(mappedBy = "artists")
+    @JsonIgnore // Evita loop infinito no JSON
+    private List<Album> albums = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "regional_id")

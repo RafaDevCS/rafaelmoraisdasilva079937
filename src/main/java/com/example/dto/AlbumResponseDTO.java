@@ -23,4 +23,6 @@ public class AlbumResponseDTO {
 
     public List<String> getCoverUrls() { return coverUrls; }
     public void setCoverUrls(List<String> coverUrls) { this.coverUrls = coverUrls; }
+
+    private List<String> artistNames; // Agora é uma lista de nomes
 }

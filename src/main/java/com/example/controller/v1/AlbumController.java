@@ -15,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import com.example.dto.AlbumResponseDTO;
 import com.example.model.Album;
+import com.example.model.Artist;
 import com.example.model.ArtistType;
 import com.example.repository.AlbumRepository;
 import com.example.service.FileStorageService;
@@ -47,9 +48,10 @@ public class AlbumController {
         return albumPage.map(album -> new AlbumResponseDTO(
                 album.getId(),
                 album.getTitle(),
+                album.getArtists().stream().map(Artist::getName).toList(), // Pega todos os nomes
                 album.getCoverImages().stream()
-                     .map(fileStorageService::getPresignedUrl)
-                     .toList()
+                    .map(fileStorageService::getPresignedUrl)
+                    .toList()
         ));
     }
 
