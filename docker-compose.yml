@@ -1,5 +1,4 @@
 services:
-  # 1. Banco de Dados (PostgreSQL)
   postgres-db:
     image: postgres:15
     container_name: postgres_music
@@ -12,20 +11,14 @@ services:
     healthcheck:
       test: ["CMD-SHELL", "pg_isready -U musicuser -d musicdb"]
       interval: 5s
-      timeout: 5s
       retries: 5
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - music-network
 
-  # 2. Storage (MinIO)
   minio:
     image: minio/minio
     container_name: minio_music
     ports:
-      - "9000:9000" # API
-      - "9001:9001" # Console
+      - "9000:9000"
+      - "9001:9001"
     environment:
       MINIO_ROOT_USER: minioadmin
       MINIO_ROOT_PASSWORD: minioadmin
@@ -33,37 +26,14 @@ services:
     healthcheck:
       test: ["CMD", "curl", "-f", "http://localhost:9000/minio/health/live"]
       interval: 5s
-      timeout: 5s
       retries: 5
-    volumes:
-      - minio_data:/data
-    networks:
-      - music-network
 
-  # 3. Utilitário para criar o Bucket (Opcional, mas recomendado para garantir)
-  createbuckets:
-    image: minio/mc
-    depends_on:
-      minio:
-        condition: service_healthy
-    entrypoint: >
-      /bin/sh -c "
-      /usr/bin/mc alias set myminio http://minio:9000 minioadmin minioadmin;
-      /usr/bin/mc mb myminio/album-covers;
-      /usr/bin/mc policy set public myminio/album-covers;
-      exit 0;
-      "
-    networks:
-      - music-network
-
-  # 4. Sua API Spring Boot
   api-music:
-    build: .             # Lê o Dockerfile na pasta atual
+    build: .
     container_name: spring_api_music
     ports:
       - "8080:8080"
     environment:
-      # Sobrescreve o application.properties para usar os nomes dos containers
       SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-db:5432/musicdb
       MINIO_URL: http://minio:9000
     depends_on:
@@ -71,17 +41,3 @@ services:
         condition: service_healthy
       minio:
         condition: service_healthy
-      createbuckets:
-        condition: service_completed_successfully
-    networks:
-      - music-network
-
-# Volumes Persistentes (Dados não somem ao desligar)
-volumes:
-  postgres_data:
-  minio_data:
-
-# Rede interna para eles se conversarem
-networks:
-  music-network:
-    driver: bridge

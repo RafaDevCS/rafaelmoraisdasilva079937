@@ -1,16 +1,13 @@
 package com.example.service;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.example.model.Album;
-import com.example.repository.AlbumRepository;
-
 import com.example.model.Artist;
+import com.example.repository.AlbumRepository;
 import com.example.repository.ArtistRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service; 
 
+import java.util.List;
 
 @Service
 public class AlbumService {
@@ -21,15 +18,15 @@ public class AlbumService {
     @Autowired
     private ArtistRepository artistRepository;
 
-    public Album save(Long artistId, Album album) {
-        // 1. Busca o artista pelo ID
-        Artist artist = artistRepository.findById(artistId)
-                .orElseThrow(() -> new RuntimeException("Artista não encontrado!"));
+    public Album save(List<Integer> artistIds, Album album) {
+        List<Artist> artists = artistRepository.findAllById(artistIds);
+        
+        if (artists.isEmpty()) {
+            throw new RuntimeException("Nenhum artista válido encontrado!");
+        }
 
-        // 2. Vincula o artista ao álbum
-        album.setArtist(artist);
+        album.setArtists(artists);
 
-        // 3. Salva o álbum
         return albumRepository.save(album);
     }
 

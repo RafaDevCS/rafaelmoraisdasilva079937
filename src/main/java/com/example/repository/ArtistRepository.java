@@ -9,7 +9,8 @@ import org.springframework.stereotype.Repository;
 import com.example.model.Artist;
 
 @Repository
-public interface ArtistRepository extends JpaRepository<Artist, Long> {
-    // Busca por nome (contendo parte do texto) com ordenação
+public interface ArtistRepository extends JpaRepository<Artist, Integer> {
     List<Artist> findByNameContainingIgnoreCase(String name, Sort sort);
+    
+   
 }

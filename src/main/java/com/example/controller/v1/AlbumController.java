@@ -48,20 +48,18 @@ public class AlbumController {
         return albumPage.map(album -> new AlbumResponseDTO(
                 album.getId(),
                 album.getTitle(),
-                album.getArtists().stream().map(Artist::getName).toList(), // Pega todos os nomes
+                album.getArtists().stream().map(Artist::getName).toList(),
                 album.getCoverImages().stream()
                     .map(fileStorageService::getPresignedUrl)
                     .toList()
         ));
     }
 
-    // ALTERADO: @PathVariable Long albumId -> Integer albumId
     @PostMapping("/{albumId}/covers")
     public ResponseEntity<Album> uploadCovers(
             @PathVariable Integer albumId, 
             @RequestParam("files") MultipartFile[] files) throws Exception {
         
-        // Agora o tipo do parâmetro combina com o esperado pelo JpaRepository<Album, Integer>
         Album album = albumRepository.findById(albumId)
                 .orElseThrow(() -> new RuntimeException("Álbum não encontrado"));
 

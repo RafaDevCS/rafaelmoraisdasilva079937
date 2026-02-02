@@ -3,18 +3,18 @@ package com.example.dto;
 import java.util.List;
 
 public class AlbumResponseDTO {
-    private Integer id; // Alterado de Long para Integer
+    private Integer id; 
     private String title;
+    private List<String> artistNames;
     private List<String> coverUrls;
 
-    // O construtor deve refletir a mudança
-    public AlbumResponseDTO(Integer id, String title, List<String> coverUrls) {
+    public AlbumResponseDTO(Integer id, String title, List<String> artistNames, List<String> coverUrls) {
         this.id = id;
         this.title = title;
+        this.artistNames = artistNames;
         this.coverUrls = coverUrls;
     }
 
-    // Getters e Setters (Certifique-se de alterar o retorno do getId para Integer)
     public Integer getId() { return id; }
     public void setId(Integer id) { this.id = id; }
 
@@ -24,5 +24,6 @@ public class AlbumResponseDTO {
     public List<String> getCoverUrls() { return coverUrls; }
     public void setCoverUrls(List<String> coverUrls) { this.coverUrls = coverUrls; }
 
-    private List<String> artistNames; // Agora é uma lista de nomes
+    public List<String> getArtistNames() { return artistNames; }
+    public void setArtistNames(List<String> artistNames) { this.artistNames = artistNames; } 
 }

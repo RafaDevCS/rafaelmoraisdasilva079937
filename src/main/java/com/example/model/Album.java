@@ -3,9 +3,10 @@ package com.example.model; // Isso indica ao Java onde o arquivo está
 import java.util.ArrayList;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 
-import jakarta.persistence.ElementCollection;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -13,23 +14,22 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Table;
 import lombok.Data;
 
 @Entity
+@Table(name = "album")
 @Data
 public class Album {
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String title;
     
-    @ElementCollection // Cria uma tabela auxiliar para as URLs das imagens
+    @JdbcTypeCode(SqlTypes.ARRAY) 
+    @Column(name = "cover_images", columnDefinition = "text[]")
     private List<String> coverImages = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "artist_id")
-    @JsonBackReference
-    private Artist artist;
+    
 
     @ManyToMany
     @JoinTable(
