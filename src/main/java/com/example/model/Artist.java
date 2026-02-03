@@ -35,6 +35,6 @@ public class Artist {
     private List<Album> albums = new ArrayList<>();
 
     @ManyToOne
-    @JoinColumn(name = "regional_id")
+    @JoinColumn(name = "regional_id", referencedColumnName = "id")
     private Regional regional;
 }

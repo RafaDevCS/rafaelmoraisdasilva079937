@@ -13,8 +13,8 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable()) // Desabilita CSRF para testar POST/PUT
-            .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()); // Libera tudo
+        http.csrf(csrf -> csrf.disable()) // Desabilitei para testar POST/PUT
+            .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()); 
         return http.build();
     }
 /* 

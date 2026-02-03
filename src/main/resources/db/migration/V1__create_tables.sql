@@ -24,3 +24,12 @@ CREATE TABLE album_artist (
     artist_id INTEGER REFERENCES artist(id) ON DELETE CASCADE,
     PRIMARY KEY (album_id, artist_id)
 );
+
+DO $$ 
+BEGIN 
+    IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='artist' AND column_name='regional_id') THEN
+        ALTER TABLE artist ADD COLUMN regional_id INTEGER;
+        ALTER TABLE artist ADD CONSTRAINT fk_artist_regional 
+            FOREIGN KEY (regional_id) REFERENCES regional(id);
+    END IF;
+END $$;

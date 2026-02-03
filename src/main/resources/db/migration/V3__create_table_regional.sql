@@ -1,9 +1,9 @@
-DO $$ 
+/* DO $$ 
 BEGIN 
     IF NOT EXISTS (SELECT 1 FROM information_schema.columns WHERE table_name='artist' AND column_name='regional_id') THEN
         ALTER TABLE artist ADD COLUMN regional_id INTEGER REFERENCES regional(id);
     END IF;
-END $$;
+END $$; */
 
 INSERT INTO regional (id, nome, ativo) VALUES 
 (9, 'REGIONAL DE CUIABÁ', true), 

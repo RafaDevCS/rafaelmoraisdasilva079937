@@ -12,12 +12,20 @@ import io.minio.GetPresignedObjectUrlArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import io.minio.http.Method;
-
 @Service
 public class FileStorageService {
 
-    @Autowired private MinioClient minioClient;
-    @Value("${minio.bucketName}") private String bucketName;
+    @Autowired 
+    private MinioClient minioClient;
+
+    @Value("${minio.access.key}")
+    private String accessKey;
+
+    @Value("${minio.secret.key}")
+    private String secretKey;
+    
+    @Value("${minio.bucketName}") 
+    private String bucketName;
 
     public String uploadFile(MultipartFile file) throws Exception {
         // Gera um nome único para o arquivo
@@ -37,20 +45,24 @@ public class FileStorageService {
     /**
      * Gera uma URL temporária para visualizar a imagem
      * @param fileName Nome do arquivo guardado no MinIO
-     * @return URL assinada válida por 15 minutos
+     * @return URL assinada válida por 30 minutos
      */
     public String getPresignedUrl(String fileName) {
         try {
+            MinioClient signingClient = MinioClient.builder()
+                .endpoint("http://localhost:9000") 
+                .credentials(accessKey, secretKey)
+                .build();
+
             return minioClient.getPresignedObjectUrl(
                 GetPresignedObjectUrlArgs.builder()
                     .method(Method.GET)
                     .bucket(bucketName)
                     .object(fileName)
-                    .expiry(30, TimeUnit.MINUTES) // <--- Alterado de 15 para 30 minutos
+                    .expiry(30, TimeUnit.MINUTES) 
                     .build()
             );
         } catch (Exception e) {
-            // Em caso de erro (ex: MinIO fora do ar), lançamos uma exceção clara
             throw new RuntimeException("Não foi possível gerar o link da imagem: " + fileName, e);
         }
     }

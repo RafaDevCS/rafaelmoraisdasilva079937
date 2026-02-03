@@ -1,24 +1,24 @@
 package com.example.controller.v1;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 import com.example.dto.AlbumResponseDTO;
+import com.example.dto.AlbumCreateDTO;
 import com.example.model.Album;
 import com.example.model.Artist;
 import com.example.model.ArtistType;
 import com.example.repository.AlbumRepository;
 import com.example.service.FileStorageService;
+import com.example.service.AlbumService;
+
+// import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/albums")
@@ -30,6 +30,9 @@ public class AlbumController {
     @Autowired
     private FileStorageService fileStorageService;
 
+    @Autowired
+    private AlbumService albumService;
+
     @GetMapping
     public Page<AlbumResponseDTO> getAllAlbums(
             @RequestParam(required = false) ArtistType type,
@@ -37,7 +40,8 @@ public class AlbumController {
             @RequestParam(defaultValue = "10") int size) {
         
         Pageable pageable = PageRequest.of(page, size);
-        Page<Album> albumPage;
+        // Page<Album> albumPage;
+        Page<Album> albumPage = albumRepository.findAll(pageable);
 
         if (type != null) {
             albumPage = albumRepository.findByArtistType(type, pageable);
@@ -69,5 +73,15 @@ public class AlbumController {
         }
 
         return ResponseEntity.ok(albumRepository.save(album));
+    }
+
+    @PostMapping
+    public ResponseEntity<Album> createAlbum(@RequestBody AlbumCreateDTO dto) {
+        Album album = new Album();
+        album.setTitle(dto.getTitle());
+        
+        Album savedAlbum = albumService.save(dto.getArtistIds(), album);
+        
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedAlbum);
     }
 }
