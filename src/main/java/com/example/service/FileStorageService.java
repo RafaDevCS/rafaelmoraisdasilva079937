@@ -12,25 +12,35 @@ import io.minio.GetPresignedObjectUrlArgs;
 import io.minio.MinioClient;
 import io.minio.PutObjectArgs;
 import io.minio.http.Method;
+import io.minio.SetBucketPolicyArgs;
 @Service
 public class FileStorageService {
 
-    @Autowired 
+    @Autowired
     private MinioClient minioClient;
 
-    @Value("${minio.access.key}")
+    @Value("${minio.accessKey}")
     private String accessKey;
 
-    @Value("${minio.secret.key}")
+    @Value("${minio.secretKey}")
     private String secretKey;
     
-    @Value("${minio.bucketName}") 
+    @Value("${minio.bucket.name:album-covers}")
     private String bucketName;
 
+    @Value("${minio.external-url}")
+    private String externalUrl;
+
+    
     public String uploadFile(MultipartFile file) throws Exception {
         // Gera um nome único para o arquivo
         String fileName = UUID.randomUUID() + "-" + file.getOriginalFilename();
-        
+        String policy = "{\"Version\":\"2012-10-17\",\"Statement\":[{\"Effect\":\"Allow\",\"Principal\":{\"AWS\":[\"*\"]},\"Action\":[\"s3:GetBucketLocation\",\"s3:ListBucket\"],\"Resource\":[\"arn:aws:s3:::" + bucketName + "\"]},{\"Effect\":\"Allow\",\"Principal\":{\"AWS\":[\"*\"]},\"Action\":[\"s3:GetObject\"],\"Resource\":[\"arn:aws:s3:::" + bucketName + "/*\"]}]}";
+
+        minioClient.setBucketPolicy(
+            SetBucketPolicyArgs.builder().bucket(bucketName).config(policy).build()
+        );
+
         minioClient.putObject(
             PutObjectArgs.builder()
                 .bucket(bucketName)
@@ -39,31 +49,26 @@ public class FileStorageService {
                 .contentType(file.getContentType())
                 .build()
         );
-        return fileName; // Retornamos o nome para salvar no banco
+        return fileName; 
     }
 
-    /**
-     * Gera uma URL temporária para visualizar a imagem
-     * @param fileName Nome do arquivo guardado no MinIO
-     * @return URL assinada válida por 30 minutos
-     */
     public String getPresignedUrl(String fileName) {
-        try {
-            MinioClient signingClient = MinioClient.builder()
-                .endpoint("http://localhost:9000") 
+    try {
+        MinioClient signer = MinioClient.builder()
+                .endpoint(externalUrl) 
                 .credentials(accessKey, secretKey)
                 .build();
 
-            return minioClient.getPresignedObjectUrl(
-                GetPresignedObjectUrlArgs.builder()
-                    .method(Method.GET)
-                    .bucket(bucketName)
-                    .object(fileName)
-                    .expiry(30, TimeUnit.MINUTES) 
-                    .build()
-            );
-        } catch (Exception e) {
-            throw new RuntimeException("Não foi possível gerar o link da imagem: " + fileName, e);
-        }
+        return signer.getPresignedObjectUrl(
+            GetPresignedObjectUrlArgs.builder()
+                .method(Method.GET)
+                .bucket(bucketName)
+                .object(fileName)
+                .expiry(30, TimeUnit.MINUTES)
+                .build()
+        );
+    } catch (Exception e) {
+        throw new RuntimeException("Erro ao recuperar imagem", e);
     }
+}
 }

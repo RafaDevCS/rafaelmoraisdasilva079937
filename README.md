@@ -16,6 +16,8 @@ Lombok: Para reduzir código repetitivo (getters/setters).
 Criados: os models
 Decidi criar duas tabelas: Artist e Album, para manter os dados conforme dados proposto. O artista está organizado por (banda ou solo) e de qual regional ele pertence.  cada artista pode ter vários albuns, cada album possui uma imagem qua vai ser armazenado no bucket do MinIO.
 
+Antes de iniciar a aplicação, precisamos informar o IP(do servidor que hospeda a API) do requisitante para gerar o link pré-assinado, atualize com seu endereço IP a variavel minio.external-url=http://x.x.x.x:9000 no arquivo java\com\example\resources\application.properties
+
 Digite o comando no terminal para iniciar API + MinIo + Banco de dados
 
 docker-compose up --build
@@ -109,6 +111,68 @@ retorno de sucesso 200 ok
         }
     ]
 }
+
+Envie um get para http://localhost:8080/api/v1/
+
+{
+    "content": [
+        {
+            "id": 1,
+            "title": "10.000 Destinos (Ao Vivo)",
+            "artistNames": [
+                "Engenheiros do Hawaii"
+            ],
+            "coverUrls": []
+        },
+        {
+            "id": 3,
+            "title": "Imunidade Musical",
+            "artistNames": [
+                "Charlie Brown Jr."
+            ],
+            "coverUrls": [
+                "http://172.16.51.97:9000/album-covers/2bfc934a-968d-4e5c-926a-3a42dcc0c714-download.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20260204%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260204T132453Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=23cfc56e726925fb1b9722fc00ec6da3bbcaa495286046c971c73d1780000f87"
+            ]
+        },
+        {
+            "id": 2,
+            "title": "Admirável Chip Novo",
+            "artistNames": [
+                "Pitty"
+            ],
+            "coverUrls": [
+                "http://172.16.51.97:9000/album-covers/78364b87-7db4-4bc3-9346-d02c08c28d6d-download.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=minioadmin%2F20260204%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20260204T132453Z&X-Amz-Expires=1800&X-Amz-SignedHeaders=host&X-Amz-Signature=89903279ecfc0cb5b94fe15a4d5b1aed83a485c9efabc2928f3c261070109b83"
+            ]
+        }
+    ],
+    "pageable": {
+        "pageNumber": 0,
+        "pageSize": 10,
+        "sort": {
+            "sorted": false,
+            "unsorted": true,
+            "empty": true
+        },
+        "offset": 0,
+        "paged": true,
+        "unpaged": false
+    },
+    "last": true,
+    "totalPages": 1,
+    "totalElements": 3,
+    "first": true,
+    "numberOfElements": 3,
+    "size": 10,
+    "number": 0,
+    "sort": {
+        "sorted": false,
+        "unsorted": true,
+        "empty": true
+    },
+    "empty": false
+}
+
+Aperte Ctrl + click no link do coverUrls e imagem irá abrir no navegador
 
 Acesse o Console do MinIO em http://localhost:9001 
 
