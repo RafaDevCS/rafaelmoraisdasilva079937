@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.dto.AlbumResponseDTO;
+import com.example.dto.AlbumUpdateDTO;
 import com.example.dto.AlbumCreateDTO;
 import com.example.model.Album;
 import com.example.model.Artist;
@@ -87,5 +88,11 @@ public class AlbumController {
         Album savedAlbum = albumService.save(dto.getArtistIds(), album);
         
         return ResponseEntity.status(HttpStatus.CREATED).body(savedAlbum);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Album> update(@PathVariable Integer id, @RequestBody AlbumUpdateDTO dto) {
+        Album updatedAlbum = albumService.update(id, dto);
+        return ResponseEntity.ok(updatedAlbum);
     }
 }
