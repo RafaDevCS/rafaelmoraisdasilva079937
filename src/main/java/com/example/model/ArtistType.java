@@ -1,5 +1,7 @@
 package com.example.model;
 
 public enum ArtistType {
-    SINGER, BAND
+    SOLO,
+    DUPLA,
+    BANDA;
 }

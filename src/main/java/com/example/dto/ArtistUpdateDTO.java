@@ -7,5 +7,5 @@ public class ArtistUpdateDTO {
     private String name;
     private String genre;
     private String type;
-    private Integer regionalId; // ID da nova regional, se mudar
+    private Integer regionalId; 
 }

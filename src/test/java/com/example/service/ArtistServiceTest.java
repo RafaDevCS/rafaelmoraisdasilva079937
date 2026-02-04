@@ -33,14 +33,12 @@ class ArtistServiceTest {
         
         Artist artist = new Artist();
         artist.setName("Rouge");
-        artist.setType(ArtistType.BAND);
+        artist.setType(ArtistType.BANDA);
         
         when(repository.save(any(Artist.class))).thenReturn(artist);
 
-        // WHEN (Quando...)
         Artist savedArtist = service.save(artist);
 
-        // THEN (Então...)
         assertNotNull(savedArtist);
         assertEquals("Rouge", savedArtist.getName());
         verify(repository, times(1)).save(artist);

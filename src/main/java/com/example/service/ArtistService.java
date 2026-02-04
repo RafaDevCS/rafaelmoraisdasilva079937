@@ -3,6 +3,7 @@ package com.example.service;
 
 import com.example.dto.ArtistUpdateDTO;
 import com.example.model.Artist;
+import com.example.model.ArtistType;
 import com.example.model.Regional;
 import com.example.repository.ArtistRepository;
 import com.example.repository.RegionalRepository;
@@ -26,16 +27,20 @@ public class ArtistService {
 
     @Transactional
     public Artist update(Integer id, ArtistUpdateDTO dto) {
-        // 1. Busca o artista atual
         Artist artist = repository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Artista não encontrado com ID: " + id));
+                .orElseThrow(() -> new RuntimeException("Artista não encontrado"));
 
-        // 2. Atualiza os campos básicos
         artist.setName(dto.getName());
         artist.setGenre(dto.getGenre());
-        artist.setType(dto.getType());
 
-        // 3. Atualiza a Regional se um ID foi enviado
+        if (dto.getType() != null) {
+            try {
+                artist.setType(ArtistType.valueOf(dto.getType().toUpperCase()));
+            } catch (IllegalArgumentException e) {
+                throw new RuntimeException("Tipo de artista inválido! Use: SOLO, DUPLA ou BANDA.");
+            }
+        }
+
         if (dto.getRegionalId() != null) {
             Regional regional = regionalRepository.findById(dto.getRegionalId())
                     .orElseThrow(() -> new RuntimeException("Regional não encontrada"));
@@ -56,7 +61,7 @@ public class ArtistService {
     public Optional<Artist> findById(Integer id) { 
         return repository.findById(id); 
     }
-    
+
     public List<Artist> findByName(String name, org.springframework.data.domain.Sort sort) {
         throw new UnsupportedOperationException("Unimplemented method 'findByName'");
     }

@@ -42,13 +42,13 @@ INSERT INTO regional (id, nome, ativo) VALUES
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO artist (id, name, genre, type, regional_id) VALUES 
-(1, 'Engenheiros do Hawaii', 'Rock', 'BAND', 9),
-(2, 'Skank', 'Rock/Pop', 'BAND', 22),
-(3, 'Jota Quest', 'Rock/Pop', 'BAND', 42),
-(4, 'Pitty', 'Rock', 'SINGER', 9),
-(5, 'Charlie Brown Jr.', 'Rock/Skate', 'BAND', 9),
-(6, 'CPM 22', 'Hardcore', 'BAND', 33),
-(7, 'Detonautas Roque Clube', 'Rock', 'BAND', 31)
+(1, 'Engenheiros do Hawaii', 'Rock', 'BANDA', 9),
+(2, 'Skank', 'Rock/Pop', 'BANDA', 22),
+(3, 'Jota Quest', 'Rock/Pop', 'BANDA', 42),
+(4, 'Pitty', 'Rock', 'SOLO', 9),
+(5, 'Charlie Brown Jr.', 'Rock/Skate', 'BANDA', 9),
+(6, 'CPM 22', 'Hardcore', 'BANDA', 33),
+(7, 'Detonautas Roque Clube', 'Rock', 'BANDA', 31)
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO album (id, title, cover_images) VALUES 

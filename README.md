@@ -42,7 +42,7 @@ Faça um POST em http://localhost:8080/api/v1/artists
 {
   "name": "Michel Teló",
   "genre": "Sertanejo",
-  "type": "SINGER",
+  "type": "SOLO",
   "regional": {
     "id": 9
   }  
@@ -54,7 +54,7 @@ retorno de sucesso 200 ok
     "id": 8,
     "name": "Michel Teló",
     "genre": "Sertanejo",
-    "type": "SINGER",
+    "type": "SOLO",
     "regional": {
         "id": 9,
         "nome": null,
@@ -78,7 +78,7 @@ retorno de sucesso 201 Created
             "id": 8,
             "name": "Michel Teló",
             "genre": "Sertanejo",
-            "type": "SINGER",
+            "type": "SOLO",
             "regional": {
                 "id": 9,
                 "nome": "REGIONAL DE CUIABÁ",
@@ -104,7 +104,7 @@ retorno de sucesso 200 ok
             "id": 1,
             "name": "Engenheiros do Hawaii",
             "genre": "Rock",
-            "type": "BAND",
+            "type": "BANDA",
             "regional": {
                 "id": 9,
                 "nome": "REGIONAL DE CUIABÁ",
@@ -172,6 +172,15 @@ Envie um get para http://localhost:8080/api/v1/
         "empty": true
     },
     "empty": false
+}
+
+Envie um PUT http://localhost:8080/api/v1/artists/8
+em raw selecione JSON
+{
+  "name": "Michel Teló - Atualizado",
+  "genre": "Sertanejo Universitário",
+  "type": "Solo",
+  "regionalId": 2
 }
 
 Aperte Ctrl + click no link do coverUrls e imagem irá abrir no navegador se não tiver passado 30 minutos que o link foi gerado
