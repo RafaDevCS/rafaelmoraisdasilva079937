@@ -22,6 +22,8 @@ Digite o comando no terminal para iniciar API + MinIo + Banco de dados
 
 docker-compose up --build
 
+Após iniciado acesse o link http://localhost:8080/swagger-ui/index.html
+
 Faça um POST para http://localhost:8080/auth/login enviando um JSON de login. Você receberá um accessToken.
 exemplo:
 {
@@ -172,7 +174,7 @@ Envie um get para http://localhost:8080/api/v1/
     "empty": false
 }
 
-Aperte Ctrl + click no link do coverUrls e imagem irá abrir no navegador
+Aperte Ctrl + click no link do coverUrls e imagem irá abrir no navegador se não tiver passado 30 minutos que o link foi gerado
 
 Acesse o Console do MinIO em http://localhost:9001 
 

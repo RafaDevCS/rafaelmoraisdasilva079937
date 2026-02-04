@@ -1,9 +1,11 @@
 package com.example.controller.v1;
 
+import com.example.dto.ArtistUpdateDTO;
 import com.example.model.Artist;
 import com.example.service.ArtistService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
@@ -34,5 +36,11 @@ public class ArtistController {
     @PostMapping
     public Artist create(@RequestBody Artist artist) {
         return service.save(artist);
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<Artist> update(@PathVariable Integer id, @RequestBody ArtistUpdateDTO dto) {
+        Artist updatedArtist = service.update(id, dto);
+        return ResponseEntity.ok(updatedArtist);
     }
 }

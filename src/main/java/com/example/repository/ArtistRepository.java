@@ -10,7 +10,7 @@ import com.example.model.Artist;
 
 @Repository
 public interface ArtistRepository extends JpaRepository<Artist, Integer> {
-    List<Artist> findByNameContainingIgnoreCase(String name, Sort sort);
     
+    List<Artist> findByNameContainingIgnoreCase(String name, Sort sort);    
    
 }
