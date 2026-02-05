@@ -183,6 +183,14 @@ em raw selecione JSON
   "regionalId": 2
 }
 
+Envie um PUT http://localhost:8080/api/v1/albums/1
+em raw selecione JSON
+
+{
+  "title": "teste edicao",
+  "artistIds": [1] 
+}
+
 Aperte Ctrl + click no link do coverUrls e imagem irá abrir no navegador se não tiver passado 30 minutos que o link foi gerado
 
 Acesse o Console do MinIO em http://localhost:9001 
@@ -195,3 +203,8 @@ ou
 ./mvnw teste   
 
 Bucket4j. Ela permite controlar o fluxo de requisições.
+
+No postman click em new, e selecione websocket, e insira ws://localhost:8080/ws-music e click em send e perceba a mensagem Connected to ws://localhost:8080/ws-music
+
+Dê um duplo click no arquivo teste.html, vai abrir no navegador e uma mensagem de "Conectado ao WebSocket!" deve aparecer.
+Faça uma alteração no Album e veja a mensagem recebida.

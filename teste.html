@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Teste WebSocket</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+</head>
+<body>
+    <h2>Logs do WebSocket:</h2>
+    <div id="mensagens" style="border: 1px solid #ccc; padding: 10px; height: 300px; overflow-y: scroll; background: #f9f9f9;">
+        Aguardando conexão...
+    </div>
+
+    <script>
+        const logDiv = document.getElementById('mensagens');
+        
+        // Conecta ao endpoint configurado no seu WebSocketConfig
+        const socket = new SockJS('http://localhost:8080/ws-music');
+        const stompClient = Stomp.over(socket);
+
+        stompClient.connect({}, (frame) => {
+            logDiv.innerHTML += "<p style='color:green'><b>Conectado ao WebSocket!</b></p>";
+            
+            // Se inscreve no tópico que configuramos no Service
+            stompClient.subscribe('/topic/albums', (message) => {
+                const album = JSON.parse(message.body);
+                logDiv.innerHTML += `<p><strong>Álbum Atualizado:</strong> ${album.title} (ID: ${album.id})</p>`;
+                console.log('Recebido:', album);
+            });
+        }, (error) => {
+            logDiv.innerHTML += `<p style='color:red'>Erro de conexão: ${error}</p>`;
+        });
+    </script>
+</body>
+</html>

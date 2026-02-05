@@ -13,7 +13,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable()) // Desabilitei para testar POST/PUT
+        http.csrf(csrf -> csrf.disable()) 
+            /* .authorizeHttpRequests(auth -> auth
+                .requestMatchers("/ws-music/**").permitAll()); */
             .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()); 
         return http.build();
     }

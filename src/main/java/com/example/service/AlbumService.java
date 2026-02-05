@@ -6,6 +6,7 @@ import com.example.model.Artist;
 import com.example.repository.AlbumRepository;
 import com.example.repository.ArtistRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +21,9 @@ public class AlbumService {
     @Autowired
     private ArtistRepository artistRepository;
 
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
+
     public Album save(List<Integer> artistIds, Album album) {
         List<Artist> artists = artistRepository.findAllById(artistIds);
         
@@ -28,6 +32,9 @@ public class AlbumService {
         }
 
         album.setArtists(artists);
+
+        messagingTemplate.convertAndSend("/topic/new-album", 
+            "Novo álbum cadastrado: " + album.getTitle());
 
         return albumRepository.save(album);
     }
@@ -51,6 +58,8 @@ public class AlbumService {
             }
             
             album.setArtists(artists);
+
+            messagingTemplate.convertAndSend("/topic/albums", album);
         }
 
         return albumRepository.save(album);

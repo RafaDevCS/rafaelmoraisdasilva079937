@@ -42,24 +42,41 @@ INSERT INTO regional (id, nome, ativo) VALUES
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO artist (id, name, genre, type, regional_id) VALUES 
-(1, 'Engenheiros do Hawaii', 'Rock', 'BANDA', 9),
-(2, 'Skank', 'Rock/Pop', 'BANDA', 22),
-(3, 'Jota Quest', 'Rock/Pop', 'BANDA', 42),
-(4, 'Pitty', 'Rock', 'SOLO', 9),
-(5, 'Charlie Brown Jr.', 'Rock/Skate', 'BANDA', 9),
-(6, 'CPM 22', 'Hardcore', 'BANDA', 33),
-(7, 'Detonautas Roque Clube', 'Rock', 'BANDA', 31)
+(1, 'Serj Tankian', 'Rock', 'BANDA', 9),
+(2, 'Mike Shinoda', 'Rock/Pop', 'BANDA', 22),
+(3, 'Michel Teló', 'Rock/Pop', 'SOLO', 42),
+(4, 'Guns N’ Roses', 'Rock', 'BANDA', 9)
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO album (id, title, cover_images) VALUES 
-(1, '10.000 Destinos (Ao Vivo)', ARRAY[]::TEXT[]),
-(2, 'Admirável Chip Novo', ARRAY[]::TEXT[]),
-(3, 'Imunidade Musical', ARRAY[]::TEXT[])
+(1, 'Harakiri', ARRAY[]::TEXT[]),
+(2, 'Black Blooms', ARRAY[]::TEXT[]),
+(3, 'The Rough Dog', ARRAY[]::TEXT[]),
+(4, 'The Rising Tied', ARRAY[]::TEXT[]),
+(5, 'Post Traumatic', ARRAY[]::TEXT[]),
+(6, 'Post Traumatic EP', ARRAY[]::TEXT[]),
+(7, 'Where’d You Go', ARRAY[]::TEXT[]),
+(8, 'Bem Sertanejo', ARRAY[]::TEXT[]),
+(9, 'Bem Sertanejo - O Show (Ao Vivo)', ARRAY[]::TEXT[]),
+(10, 'Bem Sertanejo - (1ª Temporada) - EP', ARRAY[]::TEXT[]),
+(11, 'Use Your Illusion I', ARRAY[]::TEXT[]),
+(12, 'Use Your Illusion II', ARRAY[]::TEXT[]),
+(13, 'Greatest Hits', ARRAY[]::TEXT[])
 ON CONFLICT (id) DO NOTHING;
 
 INSERT INTO album_artist (album_id, artist_id) VALUES (1, 1) ON CONFLICT DO NOTHING;
-INSERT INTO album_artist (album_id, artist_id) VALUES (2, 4) ON CONFLICT DO NOTHING;
-INSERT INTO album_artist (album_id, artist_id) VALUES (3, 5) ON CONFLICT DO NOTHING;
+INSERT INTO album_artist (album_id, artist_id) VALUES (2, 1) ON CONFLICT DO NOTHING;
+INSERT INTO album_artist (album_id, artist_id) VALUES (3, 1) ON CONFLICT DO NOTHING;
+INSERT INTO album_artist (album_id, artist_id) VALUES (4, 2) ON CONFLICT DO NOTHING;
+INSERT INTO album_artist (album_id, artist_id) VALUES (5, 2) ON CONFLICT DO NOTHING;
+INSERT INTO album_artist (album_id, artist_id) VALUES (6, 2) ON CONFLICT DO NOTHING;
+INSERT INTO album_artist (album_id, artist_id) VALUES (7, 2) ON CONFLICT DO NOTHING;
+INSERT INTO album_artist (album_id, artist_id) VALUES (8, 3) ON CONFLICT DO NOTHING;
+INSERT INTO album_artist (album_id, artist_id) VALUES (9, 3) ON CONFLICT DO NOTHING;
+INSERT INTO album_artist (album_id, artist_id) VALUES (10, 3) ON CONFLICT DO NOTHING;
+INSERT INTO album_artist (album_id, artist_id) VALUES (11, 4) ON CONFLICT DO NOTHING;
+INSERT INTO album_artist (album_id, artist_id) VALUES (12, 4) ON CONFLICT DO NOTHING;
+INSERT INTO album_artist (album_id, artist_id) VALUES (13, 4) ON CONFLICT DO NOTHING;
 
 SELECT setval(pg_get_serial_sequence('regional', 'id'), coalesce(max(id), 1)) FROM regional;
 SELECT setval(pg_get_serial_sequence('artist', 'id'), coalesce(max(id), 1)) FROM artist;
