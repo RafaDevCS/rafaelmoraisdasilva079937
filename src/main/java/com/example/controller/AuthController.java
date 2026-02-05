@@ -13,7 +13,7 @@ import com.example.dto.LoginDTO;
 import io.swagger.v3.oas.annotations.tags.Tag;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/auth")
 @Tag(name = "Autenticação")
 public class AuthController {
 

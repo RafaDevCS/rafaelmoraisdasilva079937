@@ -38,6 +38,8 @@ Após receberá dois tokens como no exemplo abaixo
 
 Insira um exemplo
 
+no postman para todas as requisições insira o token no header -> marque Authorization e insira a palavra "Bearer +token aqui" 
+
 Faça um POST em http://localhost:8080/api/v1/artists
 {
   "name": "Michel Teló",
@@ -174,7 +176,7 @@ Envie um get para http://localhost:8080/api/v1/
     "empty": false
 }
 
-Envie um PUT http://localhost:8080/api/v1/artists/8
+Para atualizar um artista, envie um PUT http://localhost:8080/api/v1/artists/8
 em raw selecione JSON
 {
   "name": "Michel Teló - Atualizado",
@@ -183,7 +185,7 @@ em raw selecione JSON
   "regionalId": 2
 }
 
-Envie um PUT http://localhost:8080/api/v1/albums/1
+Para atualizar um album, envie um PUT http://localhost:8080/api/v1/albums/1
 em raw selecione JSON
 
 {

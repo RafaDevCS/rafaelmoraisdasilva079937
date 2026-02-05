@@ -26,7 +26,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
         
         // 1. Pega o cabeçalho "Authorization"
-        String authHeader = request.getHeader("Authorization");
+        final String authHeader = request.getHeader("Authorization");
 
         // 2. Verifica se o cabeçalho existe e começa com "Bearer "
         if (authHeader == null || !authHeader.startsWith("Bearer ")) {

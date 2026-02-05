@@ -9,20 +9,12 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-// @EnableWebSecurity
+@EnableWebSecurity
 public class SecurityConfig {
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http.csrf(csrf -> csrf.disable()) 
-            /* .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/ws-music/**").permitAll()); */
-            .authorizeHttpRequests(auth -> auth.anyRequest().permitAll()); 
-        return http.build();
-    }
-/* 
+
     private final JwtAuthenticationFilter jwtAuthFilter;
 
-    // Construtor para injetar o filtro
+    // Construtor para injeção do filtro JWT
     public SecurityConfig(JwtAuthenticationFilter jwtAuthFilter) {
         this.jwtAuthFilter = jwtAuthFilter;
     }
@@ -30,20 +22,31 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-            .csrf(csrf -> csrf.disable()) // Desativa para APIs REST
-            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS)) // API sem estado (Stateless)
+            .csrf(csrf -> csrf.disable()) // Desativa CSRF para APIs REST
+            
+            // Configura a política de sessão como Stateless (sem estado)
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/actuator/**").permitAll() // Libera para monitoramento
-                .requestMatchers("/api/v1/auth/**").permitAll()
+                // Endpoints Públicos (Não precisam de Token)
+                .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers("/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html").permitAll()
-                .requestMatchers("/api/v1/**").authenticated() // Protege todos os endpoints v1
+                .requestMatchers("/actuator/**").permitAll()
+                .requestMatchers("/h2-console/**").permitAll()
+                
+                // Liberação do WebSocket (Essencial para o teste.html funcionar)
+                .requestMatchers("/ws/**", "/ws-music/**").permitAll() 
+                
+                // Endpoints Protegidos (Exigem Token JWT)
+                .requestMatchers("/api/v1/**").authenticated() 
+                
                 .anyRequest().authenticated()
             )
-            // Adiciona nosso filtro JWT antes do filtro padrão de login
-            //.addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-            // Permite carregar o console do H2 em um frame
+
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
+
             .headers(headers -> headers.frameOptions(frame -> frame.disable()));
 
         return http.build();
-    } */
+    }
 }
