@@ -204,7 +204,7 @@ Acesse o Console do MinIO em http://localhost:9001
 
 
 
-Teste de unidade (nesse momento o teste está desligado)
+Teste de unidade
 mvn test
 ou
 ./mvnw teste   
