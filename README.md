@@ -16,7 +16,7 @@ Spring Data JPA: Para persistência de dados.
 
 Lombok: Para reduzir código repetitivo (getters/setters).
 
-Não conclui a implementação do filtro de dominio, e o bloqueo do refreshToken nos demais endpoints. decidi manter para o final estratégicamente a aplicação da segurança, e priorizei a agilidade na implementação das demais funcionalidades. 
+Não conclui a implementação do filtro de domínio, e o bloqueio do refreshToken nos demais endpoints. decidi manter para o final estrategicamente a aplicação da segurança, e priorizei a agilidade na implementação das demais funcionalidades 
 
 Criados: os models
 Decidi criar duas tabelas: Artist e Album, para manter os dados conforme dados proposto. O artista está organizado por (banda ou solo) e de qual regional ele pertence.  cada artista pode ter vários albuns, cada album possui uma imagem qua vai ser armazenado no bucket do MinIO.
